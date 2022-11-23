@@ -8,6 +8,15 @@
       </router-link>
     </div>
   </header>
+
+  <div class="sub-header" v-if="$route.meta.subHeader">
+    <div class="wrap">
+      <a @click="$router.go(-1)" class="link-with-icon">
+        <arrow-left-icon />
+        <span>뒤로가기</span>
+      </a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -24,15 +33,20 @@ import { menu } from '@/assets/menu'
 import MenuAccordion from '@/components/MenuAccordion'
 import LogoComponent from '@/views/parts/Logo'
 import LogOutIcon from '@/assets/feather-icons/LogOut'
+import ArrowLeftIcon from '@/assets/feather-icons/ArrowLeft'
 
 export default {
   name: 'header-parts',
-  components: { LogOutIcon, LogoComponent },
+  components: { ArrowLeftIcon, LogOutIcon, LogoComponent },
   mounted() {
     console.log('isLogined', this.isLogined)
+    console.log(this.$route, this.$router)
   },
   data() {
     return {
+      isSubHeaderShow: [
+        '/password/new',
+      ],
     }
   },
   watch: {
@@ -51,7 +65,6 @@ export default {
    height: 60px;
    width: 100%;
    background-color: var(--primary-color);
-   box-shadow: var(--color-shadow-medium);
 
    a {
      text-decoration: none;
@@ -62,6 +75,22 @@ export default {
      display: flex;
      justify-content: space-between;
      align-items: center;
+   }
+ }
+
+ .sub-header {
+   height: 60px;
+   box-shadow: var(--color-shadow-medium);
+   background-color: var(--background-primary-color);
+
+   & > * {
+     height: 100%;
+     display: flex;
+     align-items: center;
+
+     a {
+       cursor: pointer;
+     }
    }
  }
 </style>

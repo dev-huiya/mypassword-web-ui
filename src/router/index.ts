@@ -25,6 +25,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/service/terms.vue'),
   },
   {
+    path: '/password/new',
+    component: () => import('@/views/passwordDetail.vue'),
+    meta: {
+      requiresAuth: true,
+      subHeader: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404.vue'),
   },
