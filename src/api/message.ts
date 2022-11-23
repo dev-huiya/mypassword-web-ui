@@ -56,7 +56,7 @@ const errorMessage: Message = {
   '유효하지 않은 인증 토큰 입니다.': ['INVALID_VERIFY_TOKEN'],
   '만료된 인증 코드입니다.': ['VERIFY_TOKEN_EXPIRED'],
   // 에러코드가 없을 때 (기본 메세지)
-  '오류가 발생했습니다. 이유는 나도 모르겠다냥.': [''],
+  '오류가 발생했습니다.': [''],
 }
 
 const find = (keyword = ''): string => {

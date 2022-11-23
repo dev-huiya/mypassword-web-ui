@@ -112,7 +112,6 @@ export default {
     modelValue: {
       required: true,
     },
-
     type: {
       require: true,
     },
