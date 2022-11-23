@@ -106,10 +106,14 @@ body {
 </style>
 <script>
 import HeaderParts from '@/views/parts/Header'
+import { loadToken } from '@/utils/Auth'
 // component styles
 import 'mosha-vue-toastify/dist/style.css'
 
 export default {
   components: { HeaderParts },
+  mounted() {
+    loadToken()
+  },
 }
 </script>
