@@ -132,11 +132,11 @@ export const loadToken = () => {
         throw error
       }
 
-      const data = _.pick(tokenData, ['userInfo'])
+      const data = _.pick(tokenData, ['info'])
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      store.commit('setUser', data.userInfo)
+      store.commit('setUser', data.info)
     })
     return true
   } catch (error) {
