@@ -16,8 +16,8 @@
 
 
 ## :gear: Required
-Java >= 17
+Vue >= 3.x
 
 ## :scroll: Documentation
-[docs](API.md)
+추가 예정
 
