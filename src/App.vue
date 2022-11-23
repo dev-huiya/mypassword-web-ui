@@ -44,7 +44,7 @@ html, body {
   --yellow: #ffc241;
   --black: #4c4c4c;
 
-  --mobile-size: 768px;
+  --mobile-size: 1024px;
 
   //github에서 쌔벼옴
   --color-shadow-small: 0 1px 0 rgba(27,31,36,0.04);
@@ -83,24 +83,9 @@ body {
 .wrap {
   width: 100%;
 
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 1024px) {
     width: var(--mobile-size);
     margin: 0 auto;
-  }
-}
-
-.text-logo {
-  height: 60px;
-  width: 135px;
-  color: var(--text-invert-color);
-  //mix-blend-mode: difference;
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.9em;
-  line-height: 60px;
-  padding: 0 15px;
-  font-weight: 600;
-  &:before {
-    content: 'myRecipe';
   }
 }
 
