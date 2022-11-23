@@ -6,7 +6,6 @@
 </template>
 
 <style lang="less">
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
 
 * {
@@ -24,6 +23,8 @@ html, body {
   --text-color: #333;
   // 텍스트 반전 색상 (배경 진할때 용)
   --text-invert-color: #FFF;
+  // 옅은 텍스트 색상
+  --text-lighten-color: #777;
   // 메인 컬러
   --primary-color: #655cb7;
   // 메인 두번째 컬러
@@ -58,6 +59,8 @@ html, body {
     --text-color: #d7d7d7;
     // 텍스트 반전 색상 (배경 진할때 용)
     --text-invert-color: #FFF;
+    // 옅은 텍스트 색상
+    --text-lighten-color: #959595;
     // 메인 컬러
     --primary-color: #655cb7;
     // 메인 두번째 컬러
@@ -102,6 +105,22 @@ body {
 }
 .mosha__toast__content__text {
   font-weight: normal;
+}
+
+// project custom style
+.page-container {
+  padding-top: 50px;
+  padding-bottom: 100px;
+}
+.link-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.box {
+  box-shadow: var(--color-shadow-medium);
+  background-color: var(--background-primary-color);
+  border-radius: 7px;
 }
 </style>
 <script>
