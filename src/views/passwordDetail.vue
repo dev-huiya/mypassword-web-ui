@@ -1,95 +1,60 @@
 <template>
   <div class="page-container">
-
-    <div class="box">
-      <div>
-        <h3>URL</h3>
-        <input-h v-model="data.url" label="URL" />
-      </div>
-      <div>
-        <h3>ID</h3>
-        <input-h v-model="data.username" label="ID" aria-autocomplete="none" />
-      </div>
-      <div>
-        <h3>비밀번호</h3>
-        <input-h v-model="data.password" label="Password" type="password" autocomplete="new-password" />
-      </div>
-    </div>
-
-    <div class="footer">
-      <button-h
-        v-if="!isEdit"
-        label="저장"
-        color="primary"
-        :disabled="disableSave"
-      />
-      <button-h
-        v-if="isEdit"
-        label="수정"
-        color="primary"
-        disabled=""
-      />
-      <button-h
-        v-if="isEdit"
-        label="삭제"
-        color="primary"
-        disabled=""
-      />
-    </div>
-
+    <password-detail
+      :edit="true"
+      v-for="item in list"
+      :password="item"
+      :key="item.id"
+    />
   </div>
 </template>
 
 <script>
-import InputH from '@/components/Input'
-import ButtonH from '@/components/Button'
+
+import PasswordDetail from '@/views/parts/Password'
+import query from '@/api'
 export default {
   name: 'password-detail-page',
-  components: { ButtonH, InputH },
+  components: { PasswordDetail },
   data() {
     return {
-      data: {
-        url: '',
-        username: '',
-        password: '',
-      },
-      isEdit: false,
+      list: [],
     }
   },
   mounted() {
-    this.isEdit = this.$route?.path?.indexOf('new') <= -1
+    this.load()
+  },
+  watch: {
+    $route(to, from) {
+      if(to.params.host !== from.params.host) {
+        this.load()
+      }
+    },
   },
   computed: {
-    disableSave() {
-      return !(this.data.url !== '' && this.data.username !== '' && this.data.password !== '')
+  },
+  methods: {
+    load() {
+      query({
+        url: '/password/host',
+        data: {
+          value: this.$route.params.host,
+        },
+      }).then(res => {
+        this.list = res
+      }).catch(error => {
+        console.error(error)
+        this.list = []
+      })
     },
   },
 }
 </script>
 
 <style scoped lang="less">
-.box {
-  box-shadow: var(--color-shadow-medium);
-  background-color: var(--background-primary-color);
-  border-radius: 7px;
-  padding: 20px;
-
+.page-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-
-  .button-container {
-    width: 100%;
-
-    @media only screen and (min-width: 1024px) {
-      width: 150px;
-    }
-  }
+  gap: 30px;
 }
 </style>

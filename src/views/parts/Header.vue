@@ -11,10 +11,10 @@
 
   <div class="sub-header" v-if="$route.meta.subHeader">
     <div class="wrap">
-      <a @click="$router.go(-1)" class="link-with-icon">
+      <router-link to="/" class="link-with-icon">
         <arrow-left-icon />
         <span>뒤로가기</span>
-      </a>
+      </router-link>
     </div>
   </div>
 </template>
@@ -88,8 +88,10 @@ export default {
      display: flex;
      align-items: center;
 
-     a {
+     .link-with-icon {
        cursor: pointer;
+       color: var(--text-color);
+       text-decoration: none;
      }
    }
  }

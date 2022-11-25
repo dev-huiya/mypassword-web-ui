@@ -26,6 +26,14 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/password/new',
+    component: () => import('@/views/passwordNew.vue'),
+    meta: {
+      requiresAuth: true,
+      subHeader: true,
+    },
+  },
+  {
+    path: '/password/:host',
     component: () => import('@/views/passwordDetail.vue'),
     meta: {
       requiresAuth: true,
