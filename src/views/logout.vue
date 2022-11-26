@@ -4,19 +4,25 @@
 
 <script>
 import query from '@/api'
-import { clearToken } from '@/utils/Auth'
+import { clearToken, verifyToken } from '@/utils/Auth'
+import router from '@/router'
 
 export default {
   name: '404-page',
   mounted() {
-    this.logout();
+    this.logout()
   },
   methods: {
     logout() {
+      if(!verifyToken()) {
+        this.$router.push('/')
+        clearToken()
+      }
+
       query({
         url: '/auth/signout',
         method: 'delete',
-      }).then(() => {
+      }).finally(() => {
         this.$router.push('/')
         clearToken()
       })

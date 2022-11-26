@@ -25,7 +25,7 @@ const errorHandler = (error: any) => {
     clearToken()
   }
 
-  return Promise.reject(error)
+  return Promise.reject(error.response)
 }
 
 instance.interceptors.request.use(config => {

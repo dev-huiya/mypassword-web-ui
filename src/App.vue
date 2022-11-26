@@ -86,6 +86,10 @@ body {
 .wrap {
   width: 100%;
 
+  @media only screen and (max-width: 1043px) { // 1023 + 20px
+    padding: 0px 20px;
+  }
+
   @media only screen and (min-width: 1024px) {
     width: var(--mobile-size);
     margin: 0 auto;
