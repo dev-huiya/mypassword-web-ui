@@ -3,6 +3,7 @@ import store from '@/store'
 import _ from 'lodash'
 import { showToast } from '@/utils'
 import { getErrorMessage } from '@/api/message'
+import { clearToken } from '@/utils/Auth'
 
 const TOKEN_HEADER = 'Bearer '
 
@@ -18,6 +19,10 @@ const errorHandler = (error: any) => {
 
   if(error.response.config.silent !== true) {
     showToast(getErrorMessage(error.response.data.message), 'danger')
+  }
+
+  if(error.response.status === 401) {
+    clearToken()
   }
 
   return Promise.reject(error)

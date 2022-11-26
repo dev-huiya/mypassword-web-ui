@@ -1,8 +1,6 @@
 <template>
   <div class="login-container">
 
-    <img src="/images/welcome-cat.svg" />
-
     <h2>Welcome back!</h2>
     <h4>Login</h4>
 
@@ -57,24 +55,26 @@ export default {
 </script>
 
 <style scoped lang="less">
+
 .login-container{
   min-height: calc(100vh - 60px);
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: var(--background-primary-color);
 
   h4{
     margin: 5px 0px 20px;
     color: var(--primary-color);
   }
-  img{
-    width: 60%;
-    margin: 30px 0px;
-  }
   .input-container, .button-container, .checkbox-container{
     width: 80%;
+
+    @media only screen and (min-width: 1024px) {
+      width: 400px;
+    }
   }
   a{
     text-decoration: none;

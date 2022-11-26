@@ -1,66 +1,22 @@
 <template>
   <header>
     <div class="wrap header">
-      <router-link to="/">
-        <div class="text-logo"></div>
+      <logo-component />
+
+      <router-link to="/logout" v-if="isLogined">
+        <log-out-icon width="20" height="20" />
       </router-link>
-      <div class="button-container">
-        <router-link class="search-button" to="/search">
-          <search-icon/>
-        </router-link>
-        <button class="menu-button" @click="isOpen = !isOpen">
-          <menu-icon />
-        </button>
-        <teleport to="#teleport-menu" :disabled="isOpen == false" v-if="isOpen">
-          <div class="cover" @click="isOpen = false">
-            <div class="wrap">
-              <div class="menu" @click.stop>
-                <div class="profile">
-                  <router-link class="profile-info" :to="isLogined == true ? '/account' : '/login'">
-                    <profile-image
-                      :hash="getUserProfile"
-                    />
-                    <span>{{ getUserNickname }}</span>
-                    <chevron-right-icon />
-                  </router-link>
-                  <button class="close" @click="isOpen = false"> <x-icon /> </button>
-                </div>
-
-                <div class="quick">
-                  <router-link to="/account/bookmark">
-                    <div class="icon">
-                      <BookmarkIcon />
-                    </div>
-                    <span>북마크</span>
-                  </router-link>
-                  <router-link to="/account/theme">
-                    <div class="icon">
-                      <ToggleLeftIcon />
-                    </div>
-                    <span>테마 변경</span>
-                  </router-link>
-                  <router-link to="/recipe/write">
-                    <div class="icon">
-                      <EditIcon />
-                    </div>
-                    <span>글쓰기</span>
-                  </router-link>
-                </div>
-
-                <div class="menu-accordion">
-                  <menu-accordion
-                    v-for="item in getMenu"
-                    :key="item.name"
-                    :data="item"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </teleport>
-      </div>
     </div>
   </header>
+
+  <div class="sub-header" v-if="$route.meta.subHeader">
+    <div class="wrap">
+      <router-link to="/" class="link-with-icon">
+        <arrow-left-icon />
+        <span>뒤로가기</span>
+      </router-link>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -75,36 +31,30 @@ import ToggleLeftIcon from '@/assets/feather-icons/ToggleLeft'
 import EditIcon from '@/assets/feather-icons/Edit'
 import { menu } from '@/assets/menu'
 import MenuAccordion from '@/components/MenuAccordion'
+import LogoComponent from '@/views/parts/Logo'
+import LogOutIcon from '@/assets/feather-icons/LogOut'
+import ArrowLeftIcon from '@/assets/feather-icons/ArrowLeft'
 
 export default {
   name: 'header-parts',
-  components: { MenuAccordion, EditIcon, ToggleLeftIcon, BookmarkIcon, ChevronRightIcon, ProfileImage, XIcon, SearchIcon, MenuIcon },
+  components: { ArrowLeftIcon, LogOutIcon, LogoComponent },
+  mounted() {
+    console.log('isLogined', this.isLogined)
+    console.log(this.$route, this.$router)
+  },
   data() {
     return {
-      isOpen: false,
+      isSubHeaderShow: [
+        '/password/new',
+      ],
     }
   },
   watch: {
-    isOpen() {
-      console.log('isOpen', this.isOpen)
-    },
-    $route(to, from) {
-      console.log('header-route-watch-run')
-      this.isOpen = false
-    },
   },
   computed: {
-    getUserNickname() {
-      return getUser()?.nickname || '로그인해주세요'
-    },
-    getUserProfile() {
-      return getUser()?.profile || null
-    },
-    isLogined,
-    getMenu() {
-      return menu.filter(item =>
-        item.type.includes(isLogined() === true ? 'login' : 'logout')
-      )
+    isLogined() {
+      console.log(this.$store.state.user)
+      return this.$store.state.user != null
     },
   },
 }
@@ -115,137 +65,33 @@ export default {
    height: 60px;
    width: 100%;
    background-color: var(--primary-color);
-   color: var(--text-invert-color);
 
    a {
      text-decoration: none;
+     color: var(--text-invert-color);
    }
 
    .header {
      display: flex;
-     align-items: center;
      justify-content: space-between;
-
-     .button-container{
-       display: flex;
-
-       .search-button{
-         display: flex;
-         width: 50px;
-         height: 60px;
-         align-items: center;
-         justify-content: center;
-         color: var(--text-invert-color);
-
-         svg{
-           stroke-width: 2.5;
-         }
-       }
-
-       .menu-button{
-         width: 50px;
-         height: 60px;
-         background: none;
-         border: none;
-         color: var(--text-invert-color);
-         padding-right: 10px;
-         cursor: pointer;
-
-         svg{
-           stroke-width: 2.5;
-         }
-
-       }
-     }
+     align-items: center;
    }
  }
 
- .cover{
-   width: 100vw;
-   height: 100vh;
-   background-color: #3338;
-   position: fixed;
-   top: 0px;
-   left: 0px;
+ .sub-header {
+   height: 60px;
+   box-shadow: var(--color-shadow-medium);
+   background-color: var(--background-primary-color);
 
-   .wrap{
+   & > * {
+     height: 100%;
      display: flex;
-     justify-content: flex-end;
+     align-items: center;
 
-     .menu{
-       width: 300px;
-       min-height: 100vh;
-       background-color: var(--background-secondary-color);
-       display: flex;
-       flex-direction: column;
-       gap: 10px;
-
-       .profile{
-         height: 60px;
-         background-color: var(--background-primary-color);
-         display: flex;
-         align-items: center;
-         justify-content: space-between;
-
-         .profile-info {
-           padding: 5px;
-           display: flex;
-           align-items: center;
-           flex-wrap: wrap;
-           color: var(--text-color);
-           text-decoration: none;
-           gap: 10px;
-
-           span{
-             color: var(--primary-color);
-           }
-         }
-
-         .close{
-           border: none;
-           background: none;
-           width: 60px;
-           height: 60px;
-           color: var(--text-color);
-           cursor: pointer;
-         }
-       }
-
-       .quick {
-         background-color: var(--background-primary-color);
-         display: flex;
-         align-items: center;
-         justify-content: space-evenly;
-         padding: 6px 8px;
-
-         a {
-           height: 90px;
-           text-decoration: none;
-           font-size: 0.85em;
-           color: var(--text-color);
-           display: flex;
-           justify-content: center;
-           flex-direction: column;
-           align-items: center;
-           gap: 5px;
-
-           .icon {
-             border-radius: 50%;
-             width: 45px;
-             height: 45px;
-             background-color: var(--secondary-color);
-             display: flex;
-             justify-content: center;
-             align-items: center;
-           }
-         }
-       }
-
-       .menu-accordion {
-         display: flex;
-         background-color: var(--background-primary-color);
-         flex-direction: column;
-       }
+     .link-with-icon {
+       cursor: pointer;
+       color: var(--text-color);
+       text-decoration: none;
      }
    }
  }

@@ -1,24 +1,23 @@
-# myrecipe_vue
+<div align="center">
 
-## Project setup
-```
-yarn install
-```
+  <h1>MyPasswords</h1>
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+  <p>
+    Personal Safe Password Manager
+  </p>
 
-### Compiles and minifies for production
-```
-yarn build
-```
+  <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/dev-huiya/mypassword-web-ui?label=version">
+  <img src="https://img.shields.io/github/stars/dev-huiya/mypassword-web-ui" alt="stars" />
+  <img src="https://img.shields.io/github/issues/dev-huiya/mypassword-web-ui" alt="open issues" />
+  <img src="https://img.shields.io/github/license/dev-huiya/mypassword-web-ui" alt="license" />
 
-### Lints and fixes files
-```
-yarn lint
-```
+  <br />
+</div>
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## :gear: Required
+Vue >= 3.x
+
+## :scroll: Documentation
+추가 예정
+

@@ -1,11 +1,10 @@
 import { createStore } from 'vuex'
 
 interface User {
-  seq: number,
   nickname: string,
   email: string,
   profile: string | null,
-  adAgree: boolean
+  sharedKey: string,
 }
 
 interface Network {
