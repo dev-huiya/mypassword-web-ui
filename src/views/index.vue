@@ -27,10 +27,6 @@
 
     <div v-if="list.totalElements <= 0" class="data-empty">
       <span>저장된 비밀번호가 없습니다.</span>
-      <router-link to="/password/new" class="new">
-        <edit-icon width="16" height="16" />
-        <span>새롭게 추가하기</span>
-      </router-link>
     </div>
   </div>
 </template>
