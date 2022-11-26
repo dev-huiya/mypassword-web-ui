@@ -1,15 +1,15 @@
 <template>
   <div class="page-container">
-    <password-detail :edit="false" />
+    <password-component :edit="false" />
   </div>
 </template>
 
 <script>
 
-import PasswordDetail from '@/views/parts/Password'
+import PasswordComponent from '@/views/parts/Password'
 export default {
   name: 'password-new',
-  components: { PasswordDetail },
+  components: { PasswordComponent },
 }
 </script>
 

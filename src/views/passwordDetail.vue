@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <password-detail
+    <password-component
       :edit="true"
       v-for="item in list"
       :password="item"
@@ -10,12 +10,11 @@
 </template>
 
 <script>
-
-import PasswordDetail from '@/views/parts/Password'
 import query from '@/api'
+import PasswordComponent from '@/views/parts/Password'
 export default {
   name: 'password-detail-page',
-  components: { PasswordDetail },
+  components: { PasswordComponent },
   data() {
     return {
       list: [],

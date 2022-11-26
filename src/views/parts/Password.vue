@@ -49,7 +49,7 @@ import { clientToServer, serverToClient } from '@/utils/Encrypt'
 import _ from 'lodash'
 
 export default {
-  name: 'password-detail',
+  name: 'password-component',
   components: { ButtonH, InputH },
   props: {
     password: {
