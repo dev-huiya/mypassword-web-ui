@@ -56,7 +56,7 @@ export default {
       type: Object,
       default: null,
     },
-    edit: {
+    isEdit: {
       type: Boolean,
       default: false,
     },
@@ -69,7 +69,6 @@ export default {
         username: '',
         password: '',
       },
-      isEdit: false,
       isModify: false,
     }
   },
@@ -83,7 +82,6 @@ export default {
     },
   },
   mounted() {
-    this.isEdit = this.edit
     if(!_.isEmpty(this.password)) {
       const { id, url, username = '', password = '' } = this.password
 

@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <password-component :edit="false" />
+    <password-component :is-edit="false" />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <password-component
-      :edit="true"
+      :is-edit="true"
       v-for="item in list"
       :password="item"
       :key="item.id"
