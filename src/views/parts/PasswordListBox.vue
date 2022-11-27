@@ -14,7 +14,7 @@ import ArrowRightIcon from '@/assets/feather-icons/ArrowRight'
 import { serverToClient } from '@/utils/Encrypt'
 
 export default {
-  name: 'list-box',
+  name: 'password-list-box',
   components: { ArrowRightIcon },
   props: {
     data: {
