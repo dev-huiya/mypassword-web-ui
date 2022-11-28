@@ -33,6 +33,14 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/password/:host',
+    component: () => import('@/views/passwordDetail.vue'),
+    meta: {
+      requiresAuth: true,
+      subHeader: true,
+    },
+  },
+  {
     path: '/note/new',
     component: () => import('@/views/noteNew.vue'),
     meta: {
@@ -41,8 +49,8 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/password/:host',
-    component: () => import('@/views/passwordDetail.vue'),
+    path: '/note/:id(\\d+)',
+    component: () => import('@/views/noteDetail.vue'),
     meta: {
       requiresAuth: true,
       subHeader: true,

@@ -40,7 +40,7 @@ export default {
   height: 200px;
   overflow: hidden;
 
-  @media only screen and (max-width: 1023px) {
+  @media only screen and (max-width: 768px) {
     width: 100%;
   }
 
@@ -50,4 +50,11 @@ export default {
     align-items: center;
   }
 }
+</style>
+<style>
+
+.notebox .ql-container {
+  width: 100%
+}
+
 </style>

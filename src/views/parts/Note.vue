@@ -1,7 +1,7 @@
 <template>
   <div class="note-container">
     <div class="box">
-      <QuillEditor theme="snow" toolbar="essential" v-model:content="data.contents" />
+      <QuillEditor ref="quill" theme="snow" toolbar="essential" v-model:content="data.contents" content-type="delta"/>
     </div>
 
     <div class="footer">
@@ -36,7 +36,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import ButtonH from '@/components/Button'
 import { isValidUrl } from '@/utils'
 import query from '@/api'
-import { clientToServer } from '@/utils/Encrypt'
+import { clientToServer, serverToClient } from '@/utils/Encrypt'
 
 export default {
   name: 'note-component',
@@ -45,6 +45,10 @@ export default {
     isEdit: {
       type: Boolean,
       default: false,
+    },
+    note: {
+      type: Object,
+      default: null,
     },
   },
   data() {
@@ -58,6 +62,21 @@ export default {
     }
   },
   watch: {
+    note: {
+      deep: true,
+      handler(newD, prevD) {
+        this.data = {
+          id: newD.id,
+          type: newD.type,
+          // contents: JSON.parse(serverToClient(newD.contents)),
+        }
+        this.updateEditor(JSON.parse(serverToClient(newD.contents)))
+
+        setTimeout(() => {
+          this.isModify = false
+        }, 100)
+      },
+    },
     data: {
       deep: true,
       handler(newD, prevD) {
@@ -72,46 +91,45 @@ export default {
       return (JSON.stringify(this.data.contents) === '{"ops":[{"insert":"\\n"}]}' || this.data.contents === '')
     },
     disableModify() {
-      return !(this.isModify && isValidUrl(this.data.url))
+      return !(this.isModify)
     },
   },
   methods: {
     save() {
-
       query({
         url: '/note/new',
         method: 'post',
         data: {
           type: 'NOTE',
-          contents: clientToServer(JSON.stringify(this.data.contents))
+          contents: clientToServer(JSON.stringify(this.data.contents)),
         },
       }).then(res => {
         this.$router.push(`/note/${res.id}`)
       })
     },
     modify() {
-      const url = new URL(this.data.url)
-
       query({
-        url: `/password/${this.data.id}`,
+        url: `/note/${this.data.id}`,
         method: 'put',
         data: {
-          url: this.data.url,
-          username: clientToServer(this.data.username),
-          password: clientToServer(this.data.password),
+          type: 'NOTE',
+          contents: clientToServer(JSON.stringify(this.data.contents)),
         },
       }).then(res => {
-        this.$router.push(`/password/${url.hostname}`)
+        this.$router.go(0)
         this.isModify = false
       })
     },
     del() {
       query({
-        url: `/password/${this.data.id}`,
+        url: `/note/${this.data.id}`,
         method: 'delete',
       }).then(res => {
         this.$router.push('/')
       })
+    },
+    updateEditor(delta) {
+      this.$refs.quill.setContents(delta)
     },
   },
 }
