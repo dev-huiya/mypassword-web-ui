@@ -41,6 +41,22 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/note/new',
+    component: () => import('@/views/noteNew.vue'),
+    meta: {
+      requiresAuth: true,
+      subHeader: true,
+    },
+  },
+  {
+    path: '/note/:id(\\d+)',
+    component: () => import('@/views/noteDetail.vue'),
+    meta: {
+      requiresAuth: true,
+      subHeader: true,
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404.vue'),
   },

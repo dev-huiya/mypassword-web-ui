@@ -1,18 +1,7 @@
 <template>
-  <div class="password-container">
+  <div class="note-container">
     <div class="box">
-      <div>
-        <h3>URL</h3>
-        <input-h v-model="data.url" label="URL" />
-      </div>
-      <div>
-        <h3>ID</h3>
-        <input-h v-model="data.username" label="ID" aria-autocomplete="none" />
-      </div>
-      <div>
-        <h3>비밀번호</h3>
-        <input-h v-model="data.password" label="Password" type="password" autocomplete="new-password" />
-      </div>
+      <QuillEditor ref="quill" theme="snow" toolbar="essential" v-model:content="data.contents" content-type="delta"/>
     </div>
 
     <div class="footer">
@@ -38,117 +27,117 @@
       />
     </div>
   </div>
+
 </template>
 
 <script>
-import InputH from '@/components/Input'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import ButtonH from '@/components/Button'
 import { isValidUrl } from '@/utils'
 import query from '@/api'
 import { clientToServer, serverToClient } from '@/utils/Encrypt'
-import _ from 'lodash'
 
 export default {
-  name: 'password-component',
-  components: { ButtonH, InputH },
+  name: 'note-component',
+  components: { ButtonH, QuillEditor },
   props: {
-    password: {
-      type: Object,
-      default: null,
-    },
     isEdit: {
       type: Boolean,
       default: false,
+    },
+    note: {
+      type: Object,
+      default: null,
     },
   },
   data() {
     return {
       data: {
         id: null,
-        url: '',
-        username: '',
-        password: '',
+        type: 'NOTE',
+        contents: '',
       },
       isModify: false,
     }
   },
   watch: {
+    note: {
+      deep: true,
+      handler(newD, prevD) {
+        this.data = {
+          id: newD.id,
+          type: newD.type,
+          // contents: JSON.parse(serverToClient(newD.contents)),
+        }
+        this.updateEditor(JSON.parse(serverToClient(newD.contents)))
+
+        setTimeout(() => {
+          this.isModify = false
+        }, 100)
+      },
+    },
     data: {
       deep: true,
       handler(newD, prevD) {
         console.log('run', newD, prevD)
+        console.log(JSON.stringify(newD.contents))
         this.isModify = true
       },
     },
   },
-  mounted() {
-    if(!_.isEmpty(this.password)) {
-      const { id, url, username = '', password = '' } = this.password
-
-      this.data = {
-        id,
-        url,
-        username: serverToClient(username || ''),
-        password: serverToClient(password || ''),
-      }
-      setTimeout(() => {
-        this.isModify = false
-      }, 100)
-    }
+  computed: {
+    disableSave() {
+      return (JSON.stringify(this.data.contents) === '{"ops":[{"insert":"\\n"}]}' || this.data.contents === '')
+    },
+    disableModify() {
+      return !(this.isModify)
+    },
   },
   methods: {
     save() {
-      const url = new URL(this.data.url)
-
       query({
-        url: '/password/new',
+        url: '/note/new',
         method: 'post',
         data: {
-          url: this.data.url,
-          username: clientToServer(this.data.username),
-          password: clientToServer(this.data.password),
+          type: 'NOTE',
+          contents: clientToServer(JSON.stringify(this.data.contents)),
         },
       }).then(res => {
-        this.$router.push(`/password/${url.hostname}`)
+        this.$router.push(`/note/${res.id}`)
       })
     },
     modify() {
-      const url = new URL(this.data.url)
-
       query({
-        url: `/password/${this.data.id}`,
+        url: `/note/${this.data.id}`,
         method: 'put',
         data: {
-          url: this.data.url,
-          username: clientToServer(this.data.username),
-          password: clientToServer(this.data.password),
+          type: 'NOTE',
+          contents: clientToServer(JSON.stringify(this.data.contents)),
         },
       }).then(res => {
-        this.$router.push(`/password/${url.hostname}`)
+        this.$router.go(0)
         this.isModify = false
       })
     },
     del() {
       query({
-        url: `/password/${this.data.id}`,
+        url: `/note/${this.data.id}`,
         method: 'delete',
       }).then(res => {
         this.$router.push('/')
       })
     },
-  },
-  computed: {
-    disableSave() {
-      return !(this.data.url !== '' && isValidUrl(this.data.url) && this.data.username !== '' && this.data.password !== '')
-    },
-    disableModify() {
-      return !(this.isModify && isValidUrl(this.data.url))
+    updateEditor(delta) {
+      this.$refs.quill.setContents(delta)
     },
   },
 }
 </script>
 
 <style scoped lang="less">
+.note-container {
+}
 .box {
   box-shadow: var(--color-shadow-medium);
   background-color: var(--background-primary-color);
@@ -157,9 +146,7 @@ export default {
 
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
-
 .footer {
   display: flex;
   justify-content: flex-end;
@@ -173,5 +160,11 @@ export default {
       width: 150px;
     }
   }
+}
+
+</style>
+<style>
+.ql-editor {
+  height: 400px;
 }
 </style>
