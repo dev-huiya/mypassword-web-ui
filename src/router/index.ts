@@ -57,6 +57,10 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/private',
+    component: () => import('@/views/private.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404.vue'),
   },
